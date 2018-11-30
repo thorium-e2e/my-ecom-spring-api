@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,15 +19,22 @@ public class PetsController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Response getAllPets() {
+
         Response response;
 
         List pets = repository.findAll();
+        List arrangedPets = new ArrayList();
+        for (int i = 0; i < pets.size(); i++) {
+            Pets pet = (Pets) pets.get(i);
+            arrangedPets.add(new ArrangedPet(pet.get_id(), pet.getName(), pet.getSpecies(), pet.getBreed()));
+        }
 
-        ResponseLinks links = new ResponseLinks("/", null, null);
+        ResponseLinks links = new ResponseLinks("/pets", null, null);
 
-        ResponsePayload payload = new ResponsePayload(links, pets);
+        ResponsePayload payload = new ResponsePayload(links, arrangedPets);
 
         response = new Response(true, payload, null);
+
         return response;
     }
 

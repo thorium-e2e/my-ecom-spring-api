@@ -34,4 +34,9 @@ public class Pets {
 
     public String getBreed() { return breed; }
     public void setBreed(String breed) { this.breed = breed; }
+
+    public Object getArrangedPet() {
+        ArrangedPet arranged = new ArrangedPet(get_id(), getName(), getSpecies(), getBreed());
+        return arranged;
+    }
 }
